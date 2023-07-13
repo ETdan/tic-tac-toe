@@ -34,25 +34,39 @@ img{
     text-align: center;
 }
 .winer {
-    /* margin-top: 100px; */
     padding: 10px;
     text-align: center;
 }
 .game-bored{
     display: grid;
     grid-template-columns: repeat(3,1fr);
-    width: 50%;
-    gap: 20px;
+    width: 100%;
+    gap: 10px;
     justify-content: start;
-    /* height: 100%; */
+    background-color: red;
 }
 .box{
-    /* background-color: aliceblue; */
-    outline: auto;
+    padding: 5px;
     height: 100px;
     width: 100px;
+    background-color: #6b8034;
 }
 .box img{
     display: none;
-
+}
+.score{
+    position: absolute;
+    top:20px;
+    left: 20px;
+}
+.replay{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+.footer{
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+    width: 100%;
 }

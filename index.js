@@ -1,12 +1,20 @@
 var turn=1;
+var playerOneScore=0;
+var playerTwoScore=0;
+
 var box=document.querySelectorAll('.box');
 const header=document.querySelector('.player').children[0];
 const winer=document.querySelector('.winer').children[0];
-const ary=[
+const replay=document.querySelector('.replay');
+const score=document.querySelector('.score');
+const footer=document.querySelector('.footer');
+
+var ary=[
     [0,0,0],
     [0,0,0],
     [0,0,0]
 ]
+
 box.forEach(e=>{
     e.addEventListener('click',()=>{
         e.children[0].style.display='block';
@@ -15,91 +23,110 @@ box.forEach(e=>{
         
         if(ary[row][col]===0)
         {
-            // console.log(ary[row][col]);
             if(turn==1)
             {
                 e.children[0].setAttribute('src','images/x.png');
-                ary[row][col]=1;
+                ary[row][col]='x';
                 turn=2;
                 header.textContent="player 2";
             }
             else if(turn==2)
             {
                 e.children[0].setAttribute('src','images/o.png');
-                ary[row][col]=2;
+                ary[row][col]='o';
                 turn=1;
                 header.textContent="player 1";
             }
             
             // check who won
             test=true;
-            testxr=true;
-            testxre=false;
-            testore=false;
-            testor=true;
-            ary.forEach(a=>{
-                outerLoop :
-                testor=true;
-                testxr=true;
-                a.forEach(b=>{
-                    if(b==0)
-                        test=false;
-                    if(b!=1)
-                        testxr=false;
-                    else
-                        console.log(b);
-                    if(b!=2)
-                        testor=false;
-                })
-                console.log('\n')
-                if(testxr)
-                    testxre=true;
-                if(testor)
-                    testore=true;
-                //   console.log("working")
-            });
+            
+            // check if one of the first, second or third rows of the array are equal to x or o
+            firstrowx=ary[0][0]=='x' && ary[0][1]=='x' && ary[0][2]=='x';
+            secondrowx=ary[1][0]=='x' && ary[1][1]=='x' && ary[1][2]=='x';
+            thiredrowx=ary[2][0]=='x' && ary[2][1]=='x' && ary[2][2]=='x';
+            
+            firstcolumnx=ary[0][0]=='x' && ary[1][0]=='x' && ary[2][0]=='x';
+            secondcolumnx=ary[0][1]=='x' && ary[1][1]=='x' && ary[2][1]=='x';
+            thiredcolumnx=ary[0][2]=='x' && ary[1][2]=='x' && ary[2][2]=='x';
+            
+            firstcolumno=ary[0][0]=='o' && ary[1][0]=='o' && ary[2][0]=='o';
+            secondcolumno=ary[0][1]=='o' && ary[1][1]=='o' && ary[2][1]=='o';
+            thiredcolumno=ary[0][2]=='o' && ary[1][2]=='o' && ary[2][2]=='o';
+            
+            firstrowo=ary[0][0]=='o'&& ary[0][1]=='o' && ary[0][2]=='o';
+            secondrowo=ary[1][0]=='o'&& ary[1][1]=='o' && ary[1][2]=='o';
+            thiredrowo=ary[2][0]=='o'&& ary[2][1]=='o' && ary[2][2]=='o';
 
-            if(test)
-            {
-                winer.textContent="tie";
-                clear();
-            }
-            if(testxre)
+            // check if the diadonals of the array are equal to x or o
+            leftToRightDiagonalx=ary[0][0]=='x'&& ary[1][1]=='x' && ary[2][2]=='x';
+            leftToRightDiagonalo=ary[0][0]=='o'&& ary[1][1]=='o' && ary[2][2]=='o';
+
+            rightToLeftDiagonalx=ary[2][0]=='x'&& ary[1][1]=='x' && ary[0][2]=='x';
+            rightToLeftDiagonalo=ary[2][0]=='o'&& ary[1][1]=='o' && ary[0][2]=='o';
+
+            if(firstrowx || secondrowx || thiredrowx || firstcolumnx || secondcolumnx || thiredcolumnx || leftToRightDiagonalx || rightToLeftDiagonalx)
             {
                 winer.textContent="plaer 1 won";
+                playerOneScore+=3;
+                score.children[0].textContent="player 1: "+playerOneScore;
                 clear();
             }   
-            if(testore) 
+            if(firstrowo || secondrowo || thiredrowo || firstcolumno || secondcolumno || thiredcolumno || leftToRightDiagonalo || rightToLeftDiagonalo) 
             {
                 winer.textContent="plaer 2 won";
+                playerTwoScore+=3;
+                score.children[1].textContent="player 2: "+ playerTwoScore;
                 clear();
-            }      
+            }    
+            if(istie())
+            {
+                winer.textContent="Tie";
+                playerOneScore++;
+                playerTwoScore++;
+                score.children[0].textContent="player 1: "+ playerOneScore;
+                score.children[1].textContent="player 2: "+ playerTwoScore;
+                clear();
+
+            }
         }
     })
 })
 function clear() {
     box.forEach(e=>{
-        e.addEventListener('click',()=>{
-            e.children[0].style.display='none';
-            e.children[0].setAttribute('src',' ');
-        });
+        e.children[0].style.display='none';
+        e.children[0].setAttribute('src',' ');
     });
-}
 
-function rowCheck(){
-    testor=true;
-    testxr=true;
-    a.forEach(b=>{
-        if(b==0)
-            test=false;
-        if(b!=1)
-            testxr=false;
-        else
-            console.log(b);
-        if(b!=2)
-            testor=false;
-    })
+    header.style.display="none";
+    replay.style.display="block";
+    winer.style.display="block";
 }
-function columnCheck(){
+replay.addEventListener('click',()=>{
+    ary = [
+        [0,0,0],
+        [0,0,0],
+        [0,0,0]
+    ];
+    replay.style.display="none";
+    winer.style.display="none";
 
+    header.style.display="block";
+
+    if(turn == 1)
+        header.textContent="player 1";
+    else
+        header.textContent="player 2";
+
+});
+function istie(){
+
+    for (let i = 0; i < ary.length; i++)
+      for (let j = 0; j < ary[i].length; j++) 
+        if (ary[i][j] == 0)
+            return false;
+
+    return true;
 }
+const now = new Date();
+footer.innerHTML="&copy 2023 - "+ now.getFullYear() +" Daniel Asfaw";
