@@ -99,7 +99,6 @@ function clear() {
     });
 
     header.style.display="none";
-    replay.style.display="block";
     winer.style.display="block";
 }
 replay.addEventListener('click',()=>{
@@ -108,7 +107,7 @@ replay.addEventListener('click',()=>{
         [0,0,0],
         [0,0,0]
     ];
-    replay.style.display="none";
+    clear();
     winer.style.display="none";
 
     header.style.display="block";
